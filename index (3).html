@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WebRestauracja – Strony internetowe dla restauracji</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:   #F7F4EE;
+      --cream2:  #EDEADE;
+      --ink:     #1C1A17;
+      --ink-muted: #6B6560;
+      --green:   #3A5A40;
+      --green-light: #5C7A62;
+      --amber:   #C8873A;
+      --white:   #FFFFFF;
+      --radius:  10px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 6%;
+      background: rgba(247,244,238,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(28,26,23,0.08);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 600;
+      letter-spacing: -0.02em; color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--green); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-size: .85rem; font-weight: 500; letter-spacing: .04em;
+      text-transform: uppercase; color: var(--ink-muted);
+      text-decoration: none; transition: color .25s;
+    }
+    .nav-links a:hover { color: var(--green); }
+    .nav-cta {
+      background: var(--green); color: var(--white) !important;
+      padding: 10px 22px; border-radius: 50px;
+      font-weight: 500 !important; font-size: .82rem !important;
+      transition: background .25s, transform .2s !important;
+    }
+    .nav-cta:hover { background: var(--green-light) !important; transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 120px 6% 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 85% 40%, rgba(58,90,64,.10) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 10% 80%, rgba(200,135,58,.07) 0%, transparent 60%);
+    }
+    /* decorative fork/knife lines */
+    .hero-bg::before {
+      content: '';
+      position: absolute; right: 6%; top: 50%; transform: translateY(-50%);
+      width: 420px; height: 420px;
+      border: 1px solid rgba(58,90,64,.12);
+      border-radius: 50%;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute; right: 9%; top: 50%; transform: translateY(-50%);
+      width: 300px; height: 300px;
+      border: 1px solid rgba(58,90,64,.08);
+      border-radius: 50%;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 680px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(58,90,64,.1); color: var(--green);
+      padding: 6px 16px; border-radius: 50px;
+      font-size: .78rem; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; margin-bottom: 28px;
+      border: 1px solid rgba(58,90,64,.2);
+    }
+    .hero-badge::before {
+      content: ''; width: 6px; height: 6px;
+      background: var(--green); border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .5; transform: scale(.7); }
+    }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 6vw, 5.2rem);
+      font-weight: 600; line-height: 1.08;
+      letter-spacing: -.02em; margin-bottom: 24px;
+    }
+    .hero h1 em { font-style: italic; color: var(--green); }
+    .hero-sub {
+      font-size: 1.08rem; font-weight: 300; line-height: 1.7;
+      color: var(--ink-muted); max-width: 520px; margin-bottom: 44px;
+    }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+    .btn-primary {
+      background: var(--green); color: var(--white);
+      padding: 16px 36px; border-radius: 50px;
+      font-size: .92rem; font-weight: 500; text-decoration: none;
+      transition: background .25s, transform .2s, box-shadow .25s;
+      box-shadow: 0 4px 20px rgba(58,90,64,.25);
+    }
+    .btn-primary:hover { background: var(--green-light); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(58,90,64,.3); }
+    .btn-ghost {
+      color: var(--ink); font-size: .92rem; font-weight: 500;
+      text-decoration: none; display: flex; align-items: center; gap: 8px;
+      transition: color .25s;
+    }
+    .btn-ghost:hover { color: var(--green); }
+    .btn-ghost::after { content: '↓'; font-size: 1rem; }
+    .hero-stats {
+      display: flex; gap: 40px; margin-top: 64px;
+      padding-top: 36px; border-top: 1px solid rgba(28,26,23,.1);
+      flex-wrap: wrap;
+    }
+    .stat-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem; font-weight: 600; color: var(--ink);
+      line-height: 1;
+    }
+    .stat-val span { color: var(--green); }
+    .stat-lbl { font-size: .78rem; color: var(--ink-muted); margin-top: 4px; letter-spacing: .05em; text-transform: uppercase; }
+
+    /* ── HOW IT WORKS ── */
+    .section { padding: 100px 6%; }
+    .section-label {
+      font-size: .75rem; font-weight: 600; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--amber);
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 600;
+      line-height: 1.15; letter-spacing: -.02em; margin-bottom: 16px;
+    }
+    .section-desc {
+      font-size: 1rem; color: var(--ink-muted); line-height: 1.7;
+      max-width: 520px; font-weight: 300;
+    }
+    .section-header { margin-bottom: 60px; }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2px;
+      background: rgba(28,26,23,.06);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .step {
+      background: var(--cream);
+      padding: 44px 36px;
+      transition: background .3s;
+    }
+    .step:hover { background: var(--white); }
+    .step-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem; font-weight: 300; color: rgba(28,26,23,.08);
+      line-height: 1; margin-bottom: 24px; display: block;
+    }
+    .step-icon {
+      width: 48px; height: 48px;
+      background: var(--green); border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px; font-size: 1.3rem;
+    }
+    .step h3 {
+      font-size: 1.12rem; font-weight: 600; margin-bottom: 12px;
+    }
+    .step p { font-size: .92rem; color: var(--ink-muted); line-height: 1.7; font-weight: 300; }
+
+    /* ── WHY US ── */
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center;
+    }
+    .why-features { display: flex; flex-direction: column; gap: 28px; }
+    .feature {
+      display: flex; gap: 20px; align-items: flex-start;
+      padding: 24px; border-radius: var(--radius);
+      border: 1px solid transparent;
+      transition: border-color .3s, background .3s;
+    }
+    .feature:hover { border-color: rgba(58,90,64,.2); background: var(--white); }
+    .feature-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      background: rgba(58,90,64,.1); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .feature-text h4 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
+    .feature-text p { font-size: .88rem; color: var(--ink-muted); line-height: 1.65; font-weight: 300; }
+    .why-visual {
+      background: var(--green);
+      border-radius: 20px; padding: 48px;
+      color: var(--white); position: relative; overflow: hidden;
+    }
+    .why-visual::before {
+      content: '';
+      position: absolute; bottom: -40px; right: -40px;
+      width: 200px; height: 200px;
+      background: rgba(255,255,255,.06); border-radius: 50%;
+    }
+    .why-visual::after {
+      content: '';
+      position: absolute; top: -20px; right: 40px;
+      width: 100px; height: 100px;
+      background: rgba(255,255,255,.04); border-radius: 50%;
+    }
+    .why-visual-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 600; margin-bottom: 32px;
+      line-height: 1.2; position: relative; z-index: 1;
+    }
+    .why-visual-title em { font-style: italic; opacity: .7; }
+    .price-card { position: relative; z-index: 1; }
+    .price-big {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4.5rem; font-weight: 300; line-height: 1;
+      margin-bottom: 8px;
+    }
+    .price-note { font-size: .85rem; opacity: .7; margin-bottom: 32px; font-weight: 300; }
+    .price-items { display: flex; flex-direction: column; gap: 12px; }
+    .price-item { display: flex; align-items: center; gap: 12px; font-size: .9rem; font-weight: 300; }
+    .price-item::before { content: '✓'; font-weight: 700; color: var(--amber); flex-shrink: 0; }
+
+    /* ── PROCESS ── */
+    .process-bg { background: var(--ink); color: var(--white); }
+    .process-bg .section-title { color: var(--white); }
+    .process-bg .section-desc { color: rgba(255,255,255,.55); }
+    .timeline { position: relative; padding-left: 40px; }
+    .timeline::before {
+      content: ''; position: absolute; left: 8px; top: 0; bottom: 0;
+      width: 1px; background: rgba(255,255,255,.12);
+    }
+    .timeline-item { position: relative; margin-bottom: 48px; }
+    .timeline-item:last-child { margin-bottom: 0; }
+    .timeline-dot {
+      position: absolute; left: -38px; top: 4px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--amber); flex-shrink: 0;
+      box-shadow: 0 0 0 4px rgba(200,135,58,.2);
+    }
+    .timeline-item h4 {
+      font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 8px;
+    }
+    .timeline-item p {
+      font-size: .88rem; color: rgba(255,255,255,.55); line-height: 1.65; font-weight: 300;
+    }
+
+    /* ── FAQ ── */
+    .faq-list { max-width: 700px; }
+    .faq-item {
+      border-bottom: 1px solid rgba(28,26,23,.1);
+      padding: 24px 0;
+    }
+    .faq-q {
+      font-size: 1rem; font-weight: 500; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 16px;
+    }
+    .faq-q::after { content: '+'; font-size: 1.3rem; color: var(--green); flex-shrink: 0; }
+    .faq-a {
+      font-size: .92rem; color: var(--ink-muted); line-height: 1.7;
+      font-weight: 300; margin-top: 14px; max-height: 0;
+      overflow: hidden; transition: max-height .35s ease, margin-top .2s;
+    }
+    .faq-item.open .faq-a { max-height: 300px; }
+    .faq-item.open .faq-q::after { content: '−'; }
+
+    /* ── CONTACT ── */
+    .contact-wrapper {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+    }
+    .contact-info h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem); font-weight: 600;
+      line-height: 1.15; margin-bottom: 20px;
+    }
+    .contact-info p {
+      font-size: .98rem; color: var(--ink-muted); line-height: 1.7;
+      font-weight: 300; margin-bottom: 40px;
+    }
+    .contact-methods { display: flex; flex-direction: column; gap: 16px; }
+    .contact-method {
+      display: flex; align-items: center; gap: 16px;
+      padding: 18px 22px; border-radius: var(--radius);
+      background: var(--white);
+      border: 1px solid rgba(28,26,23,.07);
+      text-decoration: none; color: var(--ink);
+      transition: border-color .25s, transform .2s;
+    }
+    .contact-method:hover { border-color: var(--green); transform: translateX(4px); }
+    .contact-method-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: rgba(58,90,64,.1); display: flex; align-items: center;
+      justify-content: center; font-size: 1.1rem; flex-shrink: 0;
+    }
+    .contact-method-label { font-size: .72rem; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 2px; }
+    .contact-method-val { font-size: .95rem; font-weight: 500; }
+
+    .contact-form {
+      background: var(--white); border-radius: 20px;
+      padding: 44px; border: 1px solid rgba(28,26,23,.07);
+    }
+    .contact-form h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 600; margin-bottom: 28px;
+    }
+    .form-group { margin-bottom: 20px; }
+    label {
+      display: block; font-size: .78rem; font-weight: 600;
+      letter-spacing: .07em; text-transform: uppercase;
+      color: var(--ink-muted); margin-bottom: 8px;
+    }
+    input, textarea, select {
+      width: 100%; padding: 14px 16px;
+      border: 1.5px solid rgba(28,26,23,.1); border-radius: var(--radius);
+      font-family: 'Outfit', sans-serif; font-size: .92rem;
+      background: var(--cream); color: var(--ink);
+      transition: border-color .25s;
+      outline: none; resize: none;
+    }
+    input:focus, textarea:focus, select:focus { border-color: var(--green); background: var(--white); }
+    textarea { min-height: 120px; }
+    .btn-submit {
+      width: 100%; padding: 16px;
+      background: var(--green); color: var(--white);
+      border: none; border-radius: 50px; cursor: pointer;
+      font-family: 'Outfit', sans-serif; font-size: .95rem; font-weight: 500;
+      transition: background .25s, transform .2s;
+    }
+    .btn-submit:hover { background: var(--green-light); transform: translateY(-1px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink); color: rgba(255,255,255,.5);
+      padding: 48px 6%;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 20px;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 600; color: var(--white); text-decoration: none;
+    }
+    .footer-logo span { color: var(--amber); }
+    footer p { font-size: .82rem; font-weight: 300; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { color: rgba(255,255,255,.4); font-size: .82rem; text-decoration: none; transition: color .2s; }
+    .footer-links a:hover { color: var(--white); }
+
+    /* ── ANIMATIONS ── */
+    .fade-up {
+      opacity: 0; transform: translateY(32px);
+      animation: fadeUp .8s ease forwards;
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .delay-1 { animation-delay: .15s; }
+    .delay-2 { animation-delay: .3s; }
+    .delay-3 { animation-delay: .45s; }
+    .delay-4 { animation-delay: .6s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .why-grid, .contact-wrapper { grid-template-columns: 1fr; gap: 40px; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 600px) {
+      .section { padding: 70px 5%; }
+      .hero { padding: 100px 5% 60px; }
+      .hero-stats { gap: 24px; }
+      .contact-form { padding: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Web<span>Resto</span></a>
+  <ul class="nav-links">
+    <li><a href="#jak-dzialamy">Jak działamy</a></li>
+    <li><a href="#dlaczego-my">Dlaczego my</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#kontakt" class="nav-cta">Skontaktuj się</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge fade-up">Strony internetowe dla restauracji</div>
+    <h1 class="fade-up delay-1">
+      Twoja restauracja zasługuje na<br/>
+      <em>piękną stronę</em> w sieci
+    </h1>
+    <p class="hero-sub fade-up delay-2">
+      Tworzymy nowoczesne strony internetowe dla restauracji szybko, prosto i w przystępnej cenie. Ty skupiasz się na gotowaniu — my zajmiemy się resztą.
+    </p>
+    <div class="hero-actions fade-up delay-3">
+      <a href="#kontakt" class="btn-primary">Zamów bezpłatną wycenę</a>
+      <a href="#jak-dzialamy" class="btn-ghost">Jak to działa</a>
+    </div>
+    <div class="hero-stats fade-up delay-4">
+      <div>
+        <div class="stat-val">48<span>h</span></div>
+        <div class="stat-lbl">Czas realizacji</div>
+      </div>
+      <div>
+        <div class="stat-val">100<span>%</span></div>
+        <div class="stat-lbl">Zadowolonych klientów</div>
+      </div>
+      <div>
+        <div class="stat-val">5<span>★</span></div>
+        <div class="stat-lbl">Ocena klientów</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JAK DZIAŁAMY -->
+<section class="section" id="jak-dzialamy">
+  <div class="section-header">
+    <div class="section-label">Proces</div>
+    <h2 class="section-title">Jak to działa?</h2>
+    <p class="section-desc">Trzy proste kroki dzielą Cię od profesjonalnej strony internetowej dla Twojej restauracji.</p>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <span class="step-num">01</span>
+      <div class="step-icon">🗺️</div>
+      <h3>Znajdujemy Twoją restaurację</h3>
+      <p>Przeglądamy Google Maps i szukamy restauracji, które jeszcze nie mają strony internetowej lub ich strona wymaga odświeżenia. Następnie kontaktujemy się z właścicielem.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">02</span>
+      <div class="step-icon">💬</div>
+      <h3>Rozmawiamy o Twoich potrzebach</h3>
+      <p>Krótka rozmowa wystarczy, żeby poznać Twój lokal, menu i oczekiwania. Nie potrzebujesz żadnej wiedzy technicznej — wszystko objaśnimy po ludzku.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">03</span>
+      <div class="step-icon">🚀</div>
+      <h3>Tworzymy i dostarczamy stronę</h3>
+      <p>Nasz zespół buduje gotową stronę w ciągu 48 godzin. Dostajesz ją do ręki — kompletną, dopracowaną i gotową do publikacji.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DLACZEGO MY -->
+<section class="section" id="dlaczego-my" style="background: var(--cream2);">
+  <div class="why-grid">
+    <div>
+      <div class="section-label">Korzyści</div>
+      <h2 class="section-title">Dlaczego właściciele restauracji wybierają nas?</h2>
+      <p class="section-desc" style="margin-bottom: 40px;">Wiemy, że prowadzenie restauracji to intensywna praca. Dlatego cały proces strony bierzemy na siebie.</p>
+      <div class="why-features">
+        <div class="feature">
+          <div class="feature-icon">⚡</div>
+          <div class="feature-text">
+            <h4>Błyskawiczna realizacja</h4>
+            <p>Gotowa strona w 48 godzin od rozmowy. Żadnego czekania tygodniami.</p>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">✏️</div>
+          <div class="feature-text">
+            <h4>Indywidualny projekt</h4>
+            <p>Każda strona jest tworzona od podstaw specjalnie dla Twojego lokalu — nie używamy gotowych szablonów.</p>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">📱</div>
+          <div class="feature-text">
+            <h4>Idealna na każdym urządzeniu</h4>
+            <p>Strona działa perfekcyjnie na telefonie, tablecie i komputerze. Klienci znajdą Cię wszędzie.</p>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🔍</div>
+          <div class="feature-text">
+            <h4>Widoczność w Google</h4>
+            <p>Każda strona jest zoptymalizowana pod kątem SEO — nowi klienci będą Cię znajdować w wyszukiwarce.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="why-visual">
+      <div class="why-visual-title">
+        Kompletna strona<br/><em>za jedną cenę</em>
+      </div>
+      <div class="price-card">
+        <div class="price-big">od 599 zł</div>
+        <div class="price-note">jednorazowa płatność · bez ukrytych kosztów</div>
+        <div class="price-items">
+          <div class="price-item">Unikalny projekt graficzny</div>
+          <div class="price-item">Menu online z Twoimi daniami</div>
+          <div class="price-item">Sekcja kontakt i mapa</div>
+          <div class="price-item">Optymalizacja pod telefony</div>
+          <div class="price-item">Integracja z Google Maps</div>
+          <div class="price-item">Podstawowe SEO</div>
+          <div class="price-item">Wsparcie po dostarczeniu</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCES SZCZEGÓŁOWY -->
+<section class="section process-bg" id="proces">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;">
+    <div>
+      <div class="section-label" style="color: var(--amber);">Jak pracujemy</div>
+      <h2 class="section-title">Od kontaktu do gotowej strony w 3 dni</h2>
+      <p class="section-desc" style="color: rgba(255,255,255,.5);">Nasz proces jest prosty i przejrzysty. Żadnych niespodzianek w trakcie.</p>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <h4>Dzień 1 — Kontakt i brief</h4>
+        <p>Dzwonimy lub piszemy, przedstawiamy się i pytamy o Twój lokal. Zbieram zdjęcia, menu i informacje o restauracji.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <h4>Dzień 1–2 — Projektowanie i kodowanie</h4>
+        <p>Nasz zespół tworzy spersonalizowany projekt graficzny i buduje stronę od podstaw. Szybko, ale z dbałością o każdy detal.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <h4>Dzień 2–3 — Poprawki i akceptacja</h4>
+        <p>Wysyłamy Ci podgląd do zatwierdzenia. Wprowadzamy wszelkie poprawki zgodnie z Twoimi uwagami.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <h4>Dzień 3 — Dostawa</h4>
+        <p>Gotowa strona trafia do Ciebie. Pomagamy ją opublikować — Ty nie musisz robić nic technicznego.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;">
+    <div>
+      <div class="section-label">Pytania i odpowiedzi</div>
+      <h2 class="section-title">Masz pytania?<br/>Mamy odpowiedzi.</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">Czy muszę mieć wcześniej stworzoną domenę lub hosting?</div>
+        <div class="faq-a">Nie musisz nic konfigurować samodzielnie. Pomożemy Ci wybrać i zakupić domenę oraz hosting — przeprowadzimy Cię przez cały proces krok po kroku.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Jak długo trwa stworzenie strony?</div>
+        <div class="faq-a">Standardowo dostarczamy gotową stronę w ciągu 48 godzin od momentu zebrania wszystkich informacji. W pilnych przypadkach możemy przyspieszyć realizację.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Czy mogę później samodzielnie aktualizować stronę?</div>
+        <div class="faq-a">Tak. Tworzymy strony, które możesz łatwo edytować — np. zmieniać menu, godziny otwarcia i zdjęcia. Oferujemy też płatne wsparcie, jeśli wolisz powierzyć nam aktualizacje.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Czy strona będzie wyświetlać się w Google?</div>
+        <div class="faq-a">Każda strona, którą tworzymy, posiada podstawową optymalizację SEO — poprawne tagi, strukturę i szybkość ładowania. Dzięki temu masz szansę pojawiać się wyżej w wynikach wyszukiwania.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Skąd znacie mój lokal?</div>
+        <div class="faq-a">Regularnie przeglądamy Google Maps w poszukiwaniu restauracji, które mogłyby skorzystać z naszych usług. Jeżeli skontaktowaliśmy się z Tobą — to dlatego, że zobaczyliśmy potencjał w Twoim lokalu!</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section class="section" id="kontakt" style="background: var(--cream2);">
+  <div class="contact-wrapper">
+    <div class="contact-info">
+      <div class="section-label">Kontakt</div>
+      <h2>Zacznijmy razem tworzyć Twoją stronę</h2>
+      <p>Masz pytania lub chcesz od razu zamówić stronę? Napisz lub zadzwoń — odpiszemy tego samego dnia.</p>
+      <div class="contact-methods">
+        <a href="tel:+48698682006" class="contact-method">
+          <div class="contact-method-icon">📞</div>
+          <div>
+            <div class="contact-method-label">Telefon</div>
+            <div class="contact-method-val">+48 698 682 006</div>
+          </div>
+        </a>
+        <a href="mailto:jeremi.swierczek@gmail.com" class="contact-method">
+          <div class="contact-method-icon">✉️</div>
+          <div>
+            <div class="contact-method-label">E-mail</div>
+            <div class="contact-method-val">jeremi.swierczek@gmail.com</div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="contact-form">
+      <h3>Napisz do nas</h3>
+      <div id="form-success" style="display:none; background: rgba(58,90,64,.1); border: 1px solid rgba(58,90,64,.25); border-radius: var(--radius); padding: 20px; text-align: center; color: var(--green);">
+        <div style="font-size:1.8rem; margin-bottom:8px;">✓</div>
+        <div style="font-weight:600; margin-bottom:4px;">Wiadomość wysłana!</div>
+        <div style="font-size:.88rem; color: var(--ink-muted);">Odezwiemy się do Ciebie tego samego dnia.</div>
+      </div>
+      <form id="contact-form" action="https://formspree.io/f/xyzgpqro" method="POST" onsubmit="handleFormSubmit(event)">
+        <input type="hidden" name="_subject" value="Nowe zgłoszenie z WebResto" />
+        <input type="hidden" name="_replyto" value="" id="reply-field" />
+        <div class="form-group">
+          <label for="name">Imię i nazwisko</label>
+          <input type="text" id="name" name="imie_nazwisko" placeholder="Jan Kowalski" required />
+        </div>
+        <div class="form-group">
+          <label for="restaurant">Nazwa restauracji</label>
+          <input type="text" id="restaurant" name="nazwa_restauracji" placeholder="Restauracja Pod Lipą" />
+        </div>
+        <div class="form-group">
+          <label for="email">Adres e-mail</label>
+          <input type="email" id="email" name="email" placeholder="jan@restauracja.pl" required oninput="document.getElementById('reply-field').value=this.value" />
+        </div>
+        <div class="form-group">
+          <label for="phone">Telefon kontaktowy</label>
+          <input type="tel" id="phone" name="telefon" placeholder="+48 000 000 000" />
+        </div>
+        <div class="form-group">
+          <label for="message">Wiadomość (opcjonalnie)</label>
+          <textarea id="message" name="wiadomosc" placeholder="Opisz swój lokal lub napisz, czego potrzebujesz..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit" id="submit-btn">Wyślij zapytanie →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="footer-logo">Web<span>Resto</span></a>
+  <p>© 2025 WebResto · Strony internetowe dla restauracji</p>
+  <div class="footer-links">
+    <a href="#jak-dzialamy">Jak działamy</a>
+    <a href="#kontakt">Kontakt</a>
+    <a href="mailto:jeremi.swierczek@gmail.com">E-mail</a>
+  </div>
+</footer>
+
+<script>
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.querySelector('.faq-q').addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // Scroll-reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.step, .feature, .timeline-item, .faq-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity .6s ease, transform .6s ease';
+    observer.observe(el);
+  });
+
+  // Form submit via Formspree
+  async function handleFormSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    const form = document.getElementById('contact-form');
+    btn.textContent = 'Wysyłanie...';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        form.style.display = 'none';
+        document.getElementById('form-success').style.display = 'block';
+      } else {
+        btn.textContent = 'Błąd — spróbuj ponownie';
+        btn.disabled = false;
+      }
+    } catch {
+      btn.textContent = 'Błąd — spróbuj ponownie';
+      btn.disabled = false;
+    }
+  }
+</script>
+</body>
+</html>
